@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_kop_sq_mobile/components/dynamic_size_button.dart';
 import 'package:project_kop_sq_mobile/components/dynamic_snackbar.dart';
 import 'package:project_kop_sq_mobile/components/password_textfield.dart';
 import 'package:project_kop_sq_mobile/components/regular_textfield.dart';
+import 'package:project_kop_sq_mobile/components/success_dialog.dart';
 import 'package:project_kop_sq_mobile/cubit/login_screen_cubit.dart';
 import 'package:project_kop_sq_mobile/cubit/show_hide_password_cubit.dart';
 
@@ -24,13 +26,13 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
-        reverse: true,
+        reverse: false,
         child: Stack(
           clipBehavior: Clip.none,
           children: [
             Container(
               width: size.width,
-              height: size.height,
+              height: size.height * 1.1,
               color: const Color(0xff0D64EF),
             ),
             Center(
@@ -110,7 +112,9 @@ class LoginScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 8,),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                context.goNamed('/forgot-password');
+                              },
                               child: Text('Lupa Password', style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
@@ -131,7 +135,12 @@ class LoginScreen extends StatelessWidget {
                             buttonColor: const Color(0xffFAA626), 
                             onPressed: () {
                               if(loginFormKey.currentState!.validate()) {
-                                loginScreenCubit.login();
+                                showDialog(
+                                  context: context, 
+                                  builder: (context) => 
+                                  const SuccessDialog(widgetKey: Key('Login Success Dialog'), 
+                                  message: 'Selamat Datang Biondi Bagasta Wiko Putra')
+                                );
                               } else {
                                 showDynamicSnackBar(
                                   context, 
@@ -143,7 +152,7 @@ class LoginScreen extends StatelessWidget {
                               }
                             }, 
                             width: size.width * 0.8,
-                            height: 40,
+                            height: 50,
                           ),
                           const SizedBox(height: 25,),
                           SizedBox(
